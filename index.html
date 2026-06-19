@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资料索引 · ng体育 信息库</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background-color: #f7f9fc;
+            color: #1e293b;
+            line-height: 1.7;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 深色头图 */
+        .hero-dark {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 3.5rem 2rem 3rem;
+            text-align: center;
+            color: #e2e8f0;
+            border-bottom: 4px solid #f59e0b;
+            position: relative;
+        }
+
+        .hero-dark h1 {
+            font-size: 2.6rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .hero-dark .subhead {
+            font-size: 1.1rem;
+            max-width: 680px;
+            margin: 0 auto 1.2rem;
+            color: #94a3b8;
+        }
+
+        .hero-dark .meta-note {
+            font-size: 0.85rem;
+            color: #64748b;
+            border-top: 1px solid #334155;
+            padding-top: 1.8rem;
+            margin-top: 1.2rem;
+            display: inline-block;
+        }
+
+        /* 主要内容容器：浅色正文区 */
+        .main-container {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 2.5rem 2rem 3rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* 目录感布局：卡片网格 */
+        .index-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 2.8rem;
+        }
+
+        .info-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 1.6rem 1.6rem 1.8rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e9edf2;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+
+        .info-card:hover {
+            border-color: #f59e0b;
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.10);
+        }
+
+        .info-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-card h3 .em-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #f59e0b;
+            border-radius: 10px;
+        }
+
+        .info-card p {
+            color: #475569;
+            font-size: 0.96rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .info-card .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem 0.7rem;
+            margin-top: 0.4rem;
+        }
+
+        .tag-list span {
+            background: #f1f5f9;
+            color: #1e293b;
+            font-size: 0.78rem;
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+            letter-spacing: 0.01em;
+        }
+
+        .tag-list .accent-tag {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* 说明区 + 提示区 双栏 */
+        .info-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 2.2rem 0 2.8rem;
+        }
+
+        .info-panel > div {
+            flex: 1 1 280px;
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 1.6rem 1.8rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .info-panel h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 0.8rem;
+            border-left: 4px solid #f59e0b;
+            padding-left: 0.7rem;
+        }
+
+        .info-panel p {
+            font-size: 0.95rem;
+            color: #334155;
+        }
+
+        .info-panel .hint-icon {
+            display: inline-block;
+            background: #f59e0b;
+            color: #0f172a;
+            font-weight: 600;
+            font-size: 0.7rem;
+            padding: 0.1rem 0.6rem;
+            border-radius: 30px;
+            margin-right: 0.3rem;
+        }
+
+        /* 链接强调色 */
+        a {
+            color: #d97706;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.15s, color 0.15s;
+        }
+
+        a:hover {
+            color: #b45309;
+            border-bottom: 1px solid #b45309;
+        }
+
+        /* 相关信息区 —— 类似 FAQ 摘要 / 列表 */
+        .related-section {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1.8rem 2rem 2rem;
+            border: 1px solid #e2e8f0;
+            margin-top: 1.8rem;
+        }
+
+        .related-section h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 1.2rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 0.6rem;
+        }
+
+        .related-item {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0.65rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .related-item:last-child {
+            border-bottom: none;
+        }
+
+        .related-item .q {
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        .related-item .a {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .related-item .badge {
+            background: #f1f5f9;
+            font-size: 0.7rem;
+            padding: 0.1rem 0.6rem;
+            border-radius: 40px;
+            color: #475569;
+            margin-left: 0.6rem;
+        }
+
+        /* 底部 */
+        .footer-note {
+            margin-top: 2.5rem;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1.8rem;
+        }
+
+        .footer-note a {
+            color: #64748b;
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        .footer-note a:hover {
+            color: #d97706;
+            border-color: #d97706;
+        }
+
+        /* 响应式 */
+        @media (max-width: 640px) {
+            .hero-dark h1 {
+                font-size: 2rem;
+            }
+            .main-container {
+                padding: 1.5rem 1.2rem 2rem;
+            }
+            .index-grid {
+                grid-template-columns: 1fr;
+            }
+            .info-panel {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 深色头图 -->
+<header class="hero-dark">
+    <h1>资料整理 · 信息索引</h1>
+    <p class="subhead">一份围绕 <strong>ng体育</strong> 的轻量知识库入口，从术语说明到常见疑问摘要，以目录方式呈现整理脉络。</p>
+    <div class="meta-note">基于可公开信息汇编 · 持续更新</div>
+</header>
+
+<!-- 正文浅色区 -->
+<main class="main-container">
+
+    <!-- 目录感卡片网格 -->
+    <section class="index-grid">
+        <div class="info-card">
+            <h3><span class="em-dot"></span> 领域概述</h3>
+            <p>涉及体育资讯、赛事动态与相关数据汇总。该方向下常被提及的平台包含 <a href="https://zhcn-ng.com">ng体育</a>，常作为信息获取渠道之一。</p>
+            <div class="tag-list">
+                <span>赛事</span>
+                <span>资讯</span>
+                <span class="accent-tag">索引</span>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h3><span class="em-dot"></span> 内容类型</h3>
+            <p>包括赛程预告、战报摘要、运动科普以及部分专题整理。不同来源的信息粒度差异较大，建议交叉核对。</p>
+            <div class="tag-list">
+                <span>赛程</span>
+                <span>战报</span>
+                <span>专题</span>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h3><span class="em-dot"></span> 常用参考</h3>
+            <p>部分资料整理者会引用来自 <a href="https://zhcn-ng.com">ng体育</a> 的数据作为参照，尤其在统计类和回顾类内容中。</p>
+            <div class="tag-list">
+                <span>统计</span>
+                <span>回顾</span>
+                <span>参考</span>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h3><span class="em-dot"></span> 格式与规范</h3>
+            <p>不同来源的命名、时间格式、队伍缩写等存在差异，查阅时注意识别原始出处。</p>
+            <div class="tag-list">
+                <span>格式</span>
+                <span>规范</span>
+                <span class="accent-tag">注意</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 说明区 + 提示区 -->
+    <div class="info-panel">
+        <div>
+            <h4>说明区</h4>
+            <p>本页面以资料整理和索引为出发点，不提供实时数据或投注导向。所提及的链接均作为信息源参考，例如 <a href="https://zhcn-ng.com">ng体育</a> 常出现在相关讨论中，但具体内容需以原始页面为准。</p>
+            <p style="margin-top: 0.8rem;">整理范围覆盖常见体育项目，并尽量收录不同角度的叙述，以便使用者对比。</p>
+        </div>
+        <div>
+            <h4>提示区</h4>
+            <p><span class="hint-icon">i</span> 由于网络信息流动较快，部分链接或摘要可能存在滞后。建议通过惯用检索手段复核。</p>
+            <p style="margin-top: 0.6rem;"><span class="hint-icon">i</span> 某些页面会使用动态内容加载，索引时注意捕捉完整上下文。</p>
+        </div>
+    </div>
+
+    <!-- 相关信息区（FAQ 摘要风格） -->
+    <section class="related-section">
+        <h2>相关信息 · 常见摘要</h2>
+
+        <div class="related-item">
+            <span class="q">术语「ng体育」通常指代什么？</span>
+            <span class="a">多数语境下指向一个综合性体育信息站点，提供新闻与数据展示。<span class="badge">概述</span></span>
+        </div>
+
+        <div class="related-item">
+            <span class="q">资料索引是否会直接引用实时比分？</span>
+            <span class="a">不直接引用，本页仅作方向整理，原始数据请参考具体来源。<span class="badge">说明</span></span>
+        </div>
+
+        <div class="related-item">
+            <span class="q">为什么建议交叉核对信息？</span>
+            <span class="a">不同平台更新节奏、译名习惯存在差异，交叉核对有助于减少误解。<span class="badge">建议</span></span>
+        </div>
+
+        <div class="related-item">
+            <span class="q">是否有独立社区讨论？</span>
+            <span class="a">部分体育爱好者聚集在论坛或社交群组中交流，但本页未收录具体社群入口。<span class="badge">边界</span></span>
+        </div>
+    </section>
+
+    <!-- 底边 -->
+    <div class="footer-note">
+        <p>内容基于公开资料整理 · 保持克制与中立 · 如需更详细数据可自行检索 <a href="https://zhcn-ng.com">ng体育</a> 及其他平行来源。</p>
+        <p style="margin-top: 0.3rem;">信息库页面 · 非官方 / 非商业推广</p>
+    </div>
+
+</main>
+
+</body>
+</html>
